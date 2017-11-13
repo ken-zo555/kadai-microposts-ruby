@@ -11,9 +11,17 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def corrent_user
+    @micropost = current_user.microposts.find_by(id: params[:id])
+    unless @micropost
+      redirect_to_url
+    end
+  end
+
   def counts(user)
     @count_microposts = user.microposts.count
     @count_followings = user.followings.count
     @count_followers = user.followers.count
+    @count_favorites = user.favorites.count
   end
 end

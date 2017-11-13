@@ -15,6 +15,8 @@ class MicropostsController < ApplicationController
   end
 
   def destroy
+    micropost = Micropost.find(@micropost.id)
+    current_user.unlike(micropost)
     @micropost.destroy
     flash[:success] = 'メッセージを削除しました。'
     redirect_back(fallback_location: root_path)
@@ -26,10 +28,4 @@ class MicropostsController < ApplicationController
     params.require(:micropost).permit(:content)
   end
   
-  def corrent_user
-    @micropost = current_user.microposts.find_by(id: params[:id])
-    unless @micropost
-      redirect_to_url
-    end
-  end
 end

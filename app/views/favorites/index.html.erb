@@ -1,0 +1,32 @@
+<% if @favorites.any? %>
+  <ul class="media-list">
+    <% @favorites.each do |f| %>
+      <% micropost = Micropost.find(f.micropost_id) %>
+      <% user = micropost.user %>
+      <li class="media">
+        <div class="media-left">
+          <img class="media-object img-rounded" src="<%= gravatar_url(user, { size: 50 }) %>" alt="">
+        </div>
+        <div class="media-body">
+          <div>
+            <%= link_to user.name, user_path(user) %> <span class="text-muted">posted at <%= micropost.created_at %></span>
+          </div>
+          <div>
+            <p><%= micropost.content %></p>
+          </div>
+        </div>
+        <div class="media-right">
+          <div>
+            <%= render 'favorites/favorite_button', micropost: micropost %>
+            <% if current_user == micropost.user %>
+              <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-xs' %>
+            <% else %>
+              <a href="#" class="btn btn-default btn-xs btn-block disabled" role="button">Delete</a>
+            <% end %>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <%= paginate @favorites %>
+<% end %>
