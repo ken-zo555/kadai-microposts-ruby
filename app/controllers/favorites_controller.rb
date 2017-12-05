@@ -4,6 +4,7 @@ class FavoritesController < ApplicationController
   def index
     @user = current_user
     @favorites = @user.like_microposts.page(params[:page])
+    counts(@user)
   end
   
   def create
